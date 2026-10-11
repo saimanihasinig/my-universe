@@ -1,0 +1,11 @@
+
+{
+  "name": "My Universe",
+  "short_name": "My Universe",
+  "description": "My personal tasks and habit tracker",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F7F2E8",
+  "theme_color": "#C6B5E8"
+}
