@@ -1,0 +1,371 @@
+
+/* ==============================
+   1. PAGE DESIGN
+============================== */
+
+body {
+    background-color: #F7F2E8;
+    color: #37345C;
+    font-family: "Gochi Hand", cursive;
+    margin: 20px;
+    font-size: 16px;
+}
+
+/* Headings and welcome message */
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 32px;
+}
+
+p {
+    font-size: 20px;
+}
+
+
+/* ==============================
+   2. TASK INPUT BOX
+============================== */
+
+#taskInput {
+    font-family: inherit;
+    font-size: 16px;
+    padding: 10px 14px;
+    border: 2px solid #C6B5E8;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    color: #37345C;
+    outline: none;
+}
+
+/* Input focus effect */
+
+#taskInput:focus {
+    border-color: #8BADE8;
+}
+
+
+/* ==============================
+   3. ADD TASK BUTTON
+============================== */
+
+#addTaskBtn {
+    font-family: inherit;
+    font-size: 17px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 12px;
+    background-color: #C6B5E8;
+    color: #37345C;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+/* Button hover effect */
+
+#addTaskBtn:hover {
+    background-color: #A9C7F5;
+    transform: translateY(-2px);
+}
+
+
+/* ==============================
+   4. TASK LIST
+============================== */
+
+#taskList {
+    list-style: none;
+    padding: 0;
+    margin-top: 24px;
+}
+
+/* Individual task card */
+
+#taskList li {
+    background-color: #FFFFFF;
+    border: 1px solid #E4DCF4;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    color: #37345C;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* ==============================
+   5. TASK CHECKBOX
+============================== */
+
+#taskList input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #8B79BD;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+
+/* ==============================
+   6. TASK TEXT
+============================== */
+
+#taskList li span {
+    flex: 1;
+    font-family: inherit;
+    font-size: 20px;
+}
+
+/* Completed task appearance */
+
+#taskList li.completed span {
+    text-decoration: line-through;
+    opacity: 0.55;
+}
+
+
+/* ==============================
+   7. DELETE BUTTON
+============================== */
+
+.deleteBtn {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 9px;
+    background-color: #F3DCE5;
+    color: #8B3A59;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+.deleteBtn:hover {
+    background-color: #EBC5D5;
+    transform: translateY(-2px);
+}
+
+
+
+/* ===== MY HABITS SECTION ===== */
+
+#habitsSection {
+    margin-top: 25px;
+}
+
+
+#habitForm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+#habitInput {
+    flex: 1;
+    min-width: 200px;
+}
+
+#habitScheduleOptions {
+    flex-basis: 100%;
+    width: 100%;
+    margin-top: 5px;
+}
+
+#habitScheduleOptions p {
+    margin: 8px 0 12px;
+    font-size: 18px;
+}
+
+#habitScheduleOptions label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 12px 10px 0;
+    font-size: 16px;
+}
+
+#habitScheduleOptions input[type="checkbox"] {
+    accent-color: #8B79BD;
+    cursor: pointer;
+}
+
+
+#habitInput {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 15px;
+    border: 2px solid #C6B5E8;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    color: #37345C;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+#habitInput:focus {
+    outline: 2px solid #A9C7F5;
+    border-color: #8B78C6;
+}
+
+#habitSchedule {
+    padding: 10px;
+    border: 2px solid #C6B5E8;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    color: #37345C;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+#addHabitBtn {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 12px;
+    background-color: #C6B5E8;
+    color: #37345C;
+    font-family: inherit;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+#addHabitBtn:hover {
+    background-color: #B5A0DF;
+    transform: translateY(-2px);
+}
+
+#habitList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#habitList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 15px 18px;
+    border: 1px solid #E0D7F2;
+    border-radius: 14px;
+    background-color: #FFFFFF;
+    color: #37345C;
+    box-shadow: 0 3px 8px rgba(55, 52, 92, 0.06);
+}
+
+/* Habit checkbox styling */
+#habitList input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #8B79BD;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+#habitList li span {
+    flex: 1;
+    overflow-wrap: anywhere;
+    font-size :20px;
+}
+
+#habitList li .habit-completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+#habitList .deleteBtn {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 9px;
+    background-color: #F3DCE5;
+    color: #8B3A59;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+#habitList .deleteBtn:hover {
+    background-color: #EBC5D5;
+}
+
+/* Mobile-friendly layout */
+@media (max-width: 600px) {
+    #habitForm {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #habitInput {
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+    }
+
+    #habitSchedule,
+    #addHabitBtn {
+        width: 100%;
+    }
+}
+
+
+#habitSchedule {
+    border: 2px solid #C6B5E8;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    color: #37345C;
+    font-family: "Gochi Hand", cursive;
+    font-size: 15px;
+    padding: 10px;
+    outline: none;
+}
+
+#habitSchedule:focus {
+    border-color: #8B79BD;
+    outline: 2px solid #A9C7F5;
+}
+
+
+#habitInterval {
+    box-sizing: border-box;
+    width: 75px;
+    padding: 8px 10px;
+    border: 2px solid #C6B5E8 !important;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    color: #37345C;
+    font-family: "Gochi Hand", cursive;
+    font-size: 16px;
+    outline: none;
+}
+
+#habitInterval:focus {
+    border-color: #8B79BD !important;
+    outline: 2px solid #A9C7F5;
+}
+
+
+#habitWeeklyDay {
+    padding: 8px 12px;
+    border: 2px solid #C6B5E8;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    color: #37345C;
+    font-family: "Gochi Hand", cursive;
+    font-size: 16px;
+    outline: none;
+}
+
+#habitWeeklyDay:focus {
+    border-color: #8B79BD;
+    outline: 2px solid #A9C7F5;
+}
+

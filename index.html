@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Universe</title>
+
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- Website Heading -->
+    <h1>My Universe 🌷</h1>
+    <p>Welcome to my personal space.</p>
+
+    <hr>
+
+    <!-- Today's Tasks Section -->
+    <section id="tasksSection">
+        <h2>Today's Tasks</h2>
+
+        <input
+            id="taskInput"
+            type="text"
+            placeholder="What do you need to do?"
+        >
+
+        <button id="addTaskBtn">Add Task</button>
+
+        <ul id="taskList"></ul>
+    </section>
+
+    <hr>
+
+    <!-- Habits Section -->
+    <section id="habitsSection">
+        <h2>My Habits 🌱</h2>
+
+        <div id="habitForm">
+
+            <input
+                id="habitInput"
+                type="text"
+                placeholder="What habit do you want to build?"
+            >
+
+            <label for="habitSchedule">Repeat:</label>
+
+            <select id="habitSchedule">
+                <option value="daily">Every day</option>
+                <option value="selectedDays">Selected weekdays</option>
+                <option value="weekly">Once a week</option>
+                <option value="interval">Every few days</option>
+            </select>
+
+            <!-- Schedule options will appear here -->
+            <div id="habitScheduleOptions"></div>
+
+            <button id="addHabitBtn">Add Habit 🌷</button>
+
+        </div>
+
+        <!-- Saved habits will appear here -->
+        <ul id="habitList"></ul>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
