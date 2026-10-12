@@ -1,12 +1,14 @@
 
-const CACHE_NAME = "my-universe-v1";
+const CACHE_NAME = "my-universe-v2";
 
 const APP_FILES = [
     "./",
     "./index.html",
     "./style.css",
     "./script.js",
-    "./manifest.json"
+    "./manifest.json",
+    "./icons/icon-192.png",
+    "./icons/icon-512.png"
 ];
 
 self.addEventListener("install", function(event) {
