@@ -4,7 +4,7 @@ const taskList = document.getElementById("taskList");
 
 let tasks = JSON.parse(localStorage.getItem("myUniverseTasks")) || [];
 let habits = JSON.parse(localStorage.getItem("myUniverseHabits")) || [];
-
+let selectedDate = getLocalDateString();
 
 function createTask(taskText, completed = false,taskId=crypto.randomUUID()) {
     const newTask = document.createElement("li");
@@ -64,10 +64,20 @@ function createTask(taskText, completed = false,taskId=crypto.randomUUID()) {
     return newTask;
 }
 
+
 function displayTasks() {
     taskList.innerHTML = "";
 
-    tasks.forEach(function(task) {
+    const selectedTasks = tasks.filter(function(task) {
+        // Keep older tasks visible until we migrate them.
+        if (!task.date) {
+            return true;
+        }
+
+        return task.date === selectedDate;
+    });
+
+    selectedTasks.forEach(function(task) {
         const newTask = createTask(
             task.text,
             task.completed,
@@ -77,6 +87,7 @@ function displayTasks() {
         taskList.appendChild(newTask);
     });
 }
+
 
 function addTask() {
 
@@ -91,7 +102,8 @@ function addTask() {
     const newTaskData = {
         id: taskId,
         text: taskText,
-        completed: false
+        completed: false,
+        date: selectedDate
     };
 
     tasks.push(newTaskData);
@@ -564,3 +576,362 @@ function getLocalDateString(date = new Date()) {
 
     return `${year}-${month}-${day}`;
 }
+
+
+const calendarGrid = document.getElementById("calendarGrid");
+const calendarMonth = document.getElementById("calendarMonth");
+const tasksHeading = document.getElementById("tasksHeading");
+
+let displayedMonth = new Date();
+displayedMonth.setDate(1);
+
+function displayCalendar() {
+    calendarGrid.innerHTML = "";
+
+    const year = displayedMonth.getFullYear();
+    const month = displayedMonth.getMonth();
+
+    calendarMonth.textContent = displayedMonth.toLocaleDateString(
+        "en-US",
+        { month: "long", year: "numeric" }
+    );
+
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    dayNames.forEach(function(day) {
+        const dayLabel = document.createElement("div");
+        dayLabel.textContent = day;
+        dayLabel.classList.add("calendar-day-name");
+        calendarGrid.appendChild(dayLabel);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.classList.add("calendar-empty");
+        calendarGrid.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const dateString = getLocalDateString(date);
+
+        const dayButton = document.createElement("button");
+        dayButton.type = "button";
+        dayButton.textContent = day;
+        dayButton.classList.add("calendar-date");
+
+        if (dateString === getLocalDateString()) {
+            dayButton.classList.add("today");
+        }
+
+        if (dateString === selectedDate) {
+            dayButton.classList.add("selected");
+        }
+
+        const hasTasks = tasks.some(function(task) {
+            return task.date === dateString;
+        });
+
+        if (hasTasks) {
+            dayButton.classList.add("has-tasks");
+        }
+
+        dayButton.addEventListener("click", function() {
+            selectedDate = dateString;
+            displayCalendar();
+            displayTasks();
+
+            tasksHeading.textContent =
+                dateString === getLocalDateString()
+                    ? "Today's Tasks"
+                    : "Tasks for " + date.toLocaleDateString(
+                        "en-US",
+                        { month: "short", day: "numeric", year: "numeric" }
+                    );
+        });
+
+        calendarGrid.appendChild(dayButton);
+    }
+}
+
+document.getElementById("prevMonthBtn").addEventListener(
+    "click",
+    function() {
+        displayedMonth.setMonth(displayedMonth.getMonth() - 1);
+        displayCalendar();
+    }
+);
+
+document.getElementById("nextMonthBtn").addEventListener(
+    "click",
+    function() {
+        displayedMonth.setMonth(displayedMonth.getMonth() + 1);
+        displayCalendar();
+    }
+);
+
+document.getElementById("todayBtn").addEventListener(
+    "click",
+    function() {
+        displayedMonth = new Date();
+        displayedMonth.setDate(1);
+
+        selectedDate = getLocalDateString();
+
+        displayCalendar();
+        displayTasks();
+
+        tasksHeading.textContent = "Today's Tasks";
+    }
+);
+
+displayCalendar();
+
+
+const datePickerModal = document.getElementById("datePickerModal");
+const chosenDatePreview = document.getElementById("chosenDatePreview");
+const cancelDateBtn = document.getElementById("cancelDateBtn");
+const confirmDateBtn = document.getElementById("confirmDateBtn");
+
+const jumpMonthBtn = document.getElementById("jumpMonthBtn");
+const jumpMonthLabel = document.getElementById("jumpMonthLabel");
+const monthOptions = document.getElementById("monthOptions");
+
+let chosenMonth = 0;
+
+const monthNames = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+];
+
+
+// Build the custom month menu
+monthNames.forEach(function(month, index) {
+    const option = document.createElement("button");
+
+    option.type = "button";
+    option.classList.add("month-option");
+    option.textContent = month;
+
+    option.addEventListener("click", function() {
+        chosenMonth = index;
+        jumpMonthLabel.textContent = month;
+
+        monthOptions.hidden = true;
+        jumpMonthBtn.setAttribute("aria-expanded", "false");
+
+        updateJumpDays();
+    });
+
+    monthOptions.appendChild(option);
+});
+
+// Custom Day and Year picker elements
+const jumpDayBtn = document.getElementById("jumpDayBtn");
+const jumpDayLabel = document.getElementById("jumpDayLabel");
+const dayOptions = document.getElementById("dayOptions");
+
+const jumpYearBtn = document.getElementById("jumpYearBtn");
+const jumpYearLabel = document.getElementById("jumpYearLabel");
+const yearOptions = document.getElementById("yearOptions");
+
+// Store the selected day and year
+let chosenDay = 1;
+let chosenYear = 2026;
+
+
+// Close a dropdown menu
+function closePickerMenu(menu, button) {
+    menu.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+}
+
+
+// Open or close a dropdown menu
+function togglePickerMenu(menu, button) {
+    const willOpen = menu.hidden;
+
+    // Close the other custom menus
+    closePickerMenu(dayOptions, jumpDayBtn);
+    closePickerMenu(monthOptions, jumpMonthBtn);
+    closePickerMenu(yearOptions, jumpYearBtn);
+
+    console.log("Day hidden:", dayOptions.hidden);
+    console.log("Month hidden:", monthOptions.hidden);
+    console.log("Year hidden:", yearOptions.hidden);
+
+    menu.hidden = !willOpen;
+    button.setAttribute("aria-expanded", String(willOpen));
+}
+
+
+// Update the available days for the chosen month and year
+function updateJumpDays() {
+    const daysInMonth = new Date(
+        chosenYear,
+        chosenMonth + 1,
+        0
+    ).getDate();
+
+    // Keep the selected day valid for the month
+    chosenDay = Math.min(chosenDay, daysInMonth);
+
+    dayOptions.innerHTML = "";
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const option = document.createElement("button");
+
+        option.type = "button";
+        option.classList.add("picker-option");
+        option.textContent = day;
+
+        option.addEventListener("click", function() {
+            chosenDay = day;
+            jumpDayLabel.textContent = day;
+
+            closePickerMenu(dayOptions, jumpDayBtn);
+            updateDatePreview();
+        });
+
+        dayOptions.appendChild(option);
+    }
+
+    jumpDayLabel.textContent = chosenDay;
+    updateDatePreview();
+}
+
+
+// Build the list of years
+for (let year = 1900; year <= 2100; year++) {
+    const option = document.createElement("button");
+
+    option.type = "button";
+    option.classList.add("picker-option");
+    option.textContent = year;
+
+    option.addEventListener("click", function() {
+        chosenYear = year;
+        jumpYearLabel.textContent = year;
+
+        closePickerMenu(yearOptions, jumpYearBtn);
+        updateJumpDays();
+    });
+
+    yearOptions.appendChild(option);
+}
+
+
+
+jumpDayBtn.addEventListener("click", function() {
+    togglePickerMenu(dayOptions, jumpDayBtn);
+});
+
+jumpMonthBtn.addEventListener("click", function() {
+    togglePickerMenu(monthOptions, jumpMonthBtn);
+});
+
+jumpYearBtn.addEventListener("click", function() {
+    togglePickerMenu(yearOptions, jumpYearBtn);
+});
+
+
+// Update the date preview
+function updateDatePreview() {
+    if (
+        chosenDay < 1 ||
+        chosenMonth === undefined ||
+        !chosenYear
+    ) {
+        chosenDatePreview.textContent = "Select a date";
+        return;
+    }
+
+    const chosenDate = new Date(
+        chosenYear,
+        chosenMonth,
+        chosenDay,
+        12
+    );
+
+    chosenDatePreview.textContent =
+        chosenDate.toLocaleDateString("en-US", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+}
+
+
+// Open the Jump to Date popup
+function openJumpDatePicker() {
+    const parts = selectedDate.split("-").map(Number);
+
+    chosenYear = parts[0];
+    chosenMonth = parts[1] - 1;
+    chosenDay = parts[2];
+
+    jumpYearLabel.textContent = chosenYear;
+    jumpMonthLabel.textContent = monthNames[chosenMonth];
+    jumpDayLabel.textContent = chosenDay;
+
+    closePickerMenu(dayOptions, jumpDayBtn);
+    closePickerMenu(monthOptions, jumpMonthBtn);
+    closePickerMenu(yearOptions, jumpYearBtn);
+
+    updateJumpDays();
+
+    datePickerModal.hidden = false;
+}
+
+
+calendarMonth.addEventListener("click", openJumpDatePicker);
+
+
+// Cancel button
+cancelDateBtn.addEventListener("click", function() {
+    datePickerModal.hidden = true;
+
+    closePickerMenu(dayOptions, jumpDayBtn);
+    closePickerMenu(monthOptions, jumpMonthBtn);
+    closePickerMenu(yearOptions, jumpYearBtn);
+});
+
+
+// OK button
+confirmDateBtn.addEventListener("click", function() {
+    const year = chosenYear;
+    const month = chosenMonth;
+    const day = chosenDay;
+
+    selectedDate = [
+        String(year).padStart(4, "0"),
+        String(month + 1).padStart(2, "0"),
+        String(day).padStart(2, "0")
+    ].join("-");
+
+    displayedMonth = new Date(year, month, 1);
+
+    displayCalendar();
+    displayTasks();
+
+    const chosenDate = new Date(year, month, day, 12);
+
+    tasksHeading.textContent =
+        selectedDate === getLocalDateString()
+            ? "Today's Tasks"
+            : "Tasks for " + chosenDate.toLocaleDateString(
+                "en-US",
+                {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric"
+                }
+            );
+
+    datePickerModal.hidden = true;
+});

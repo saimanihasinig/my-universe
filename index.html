@@ -27,10 +27,99 @@
 
     <hr>
 
+    <!-- Calendar Section -->
+    <section id="calendarSection">
+        <h2>My Calendar 🗓️</h2>
+
+        <div id="calendarHeader">
+            <button id="prevMonthBtn" type="button">❮</button>
+            <button id="calendarMonth" type="button">
+                October 2026
+            </button>
+            <button id="nextMonthBtn" type="button">❯</button>
+            <button id="todayBtn" type="button">Today 🌷</button>
+        </div>
+
+        <div id="calendarGrid"></div>
+    </section>
+
+    
+    <!-- Jump to Date Popup -->
+    <div id="datePickerModal" class="date-picker-modal" hidden>
+        <div class="date-picker-box">
+            <h2>Jump to</h2>
+
+            <p id="chosenDatePreview">Select a date</p>
+
+            <div id="customDatePicker">
+
+                <!-- DAY PICKER -->
+                <div class="date-picker-column">
+                    <label for="jumpDayBtn">Day</label>
+
+                    <div class="custom-picker">
+                        <button id="jumpDayBtn" class="picker-button"
+                                type="button" aria-expanded="false"
+                                aria-controls="dayOptions">
+                            <span id="jumpDayLabel">13</span>
+                            <span aria-hidden="true">⌄</span>
+                        </button>
+
+                        <div id="dayOptions" class="picker-options" hidden></div>
+                    </div>
+                </div>
+
+                <!-- MONTH PICKER -->
+                <div class="date-picker-column">
+                    <label for="jumpMonthBtn">Month</label>
+
+                    <div class="month-picker">
+                        <button id="jumpMonthBtn" type="button"
+                                aria-expanded="false" aria-controls="monthOptions">
+                            <span id="jumpMonthLabel">October</span>
+                        <span aria-hidden="true">⌄</span>
+                        </button>
+
+                        <div id="monthOptions" class="month-options" hidden></div>
+                    </div>
+                </div>
+
+                <!-- YEAR PICKER -->
+                <div class="date-picker-column">
+                    <label for="jumpYearBtn">Year</label>
+
+                    <div class="custom-picker">
+                        <button id="jumpYearBtn" class="picker-button"
+                                type="button" aria-expanded="false"
+                                aria-controls="yearOptions">
+                            <span id="jumpYearLabel">2026</span>
+                            <span aria-hidden="true">⌄</span>
+                        </button>
+
+                        <div id="yearOptions" class="picker-options" hidden></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="date-picker-actions">
+                <button id="cancelDateBtn" type="button">
+                    Cancel
+                </button>
+
+                <button id="confirmDateBtn" type="button">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <hr>
+
     <!-- Today's Tasks Section -->
     <section id="tasksSection">
-        <h2>Today's Tasks</h2>
-
+    <h2 id="tasksHeading">Today's Tasks</h2>
         <input
             id="taskInput"
             type="text"
